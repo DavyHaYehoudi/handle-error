@@ -1,0 +1,31 @@
+class MainError extends Error {
+  constructor(errorMessage, errorType = "") {
+    super();
+
+    this.name = this.constructor.name;
+    this.message = errorMessage;
+
+    switch (this.constructor.name) {
+      case "AuthenticationError":
+        if (errorType == 0) {
+          this.statusCode = 400;
+        } else if (errorType == 1) {
+          this.statusCode = 404;
+        } else {
+          this.statusCode = 401;
+        }
+        break;
+      case "RequestError":
+        console.log('je suis dans le case RequestError');
+        this.statusCode = 400;
+        break;
+      default:
+        console.log("No handler for that");
+    }
+  }
+}
+
+class AuthenticationError extends MainError {}
+class RequestError extends MainError {}
+
+module.exports = { MainError, AuthenticationError, RequestError };
